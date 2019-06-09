@@ -1,14 +1,30 @@
 package routing
 
-// storePassWordRequest holds the UserName and EncryptedPassword of the incoming request
-type storePassWordRequest struct {
+// PassWordRequest holds the UserName and EncryptedPassword of the incoming request
+type PassWordRequest struct {
 	UserName          string `json:username`
 	EncryptedPassword string `json:password`
 }
 
-type storeCompleteHash struct {
+// CompleteHash hash the hashedData
+type CompleteHash struct {
 	HashedData string `json:hash`
 }
 
-//StoredData is the DS that contains all the data
-var StoredData = make(map[string]string)
+// User has each user
+type User struct {
+	UserID string
+}
+
+// UserHash is the hash of a user
+type UserHash struct {
+	UserHashData string
+}
+
+// projectData is the map that contains data of one particular user
+type projectData struct {
+	ProjectPwdMap map[string]string
+}
+
+//StoredData is the DS that contains all the data of multiple users
+var StoredData = make(map[string]projectData)

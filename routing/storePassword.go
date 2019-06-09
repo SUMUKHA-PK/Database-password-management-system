@@ -1,12 +1,12 @@
 package routing
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/SUMUKHA-PK/Database-password-management-system/crypto"
 )
 
 // StorePassword is the function that stores the incoming password
@@ -17,7 +17,7 @@ func StorePassword(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	var newReq storePassWordRequest
+	var newReq PassWordRequest
 	err = json.Unmarshal(body, &newReq)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -30,17 +30,12 @@ func StorePassword(w http.ResponseWriter, r *http.Request) {
 	// this hashed string is the key to the hashmap,
 	// the hashmap has value as the password that comes in
 
-	hashedData := sha256.New()
-	//hash the data
-	hashedData.Write([]byte(newReq.UserName + newReq.EncryptedPassword))
-
-	//convert the hashed byte data to hex string
-	hashedString := hex.EncodeToString(hashedData.Sum(nil))
+	hashedString := crypto.CreateSHA256Hash(newReq.UserName + newReq.EncryptedPassword)
 	// the Object that is sent out as a response
-	hashOutput := storeCompleteHash{hashedString}
+	hashOutput := CompleteHash{hashedString}
 
 	//add the password on to the hashmap
-	StoredData[hashedString] = newReq.EncryptedPassword
+	// StoredData[hashedString] = newReq.EncryptedPassword
 
 	//marshalling the object into JSON type
 	outJSON, err := json.Marshal(hashOutput)
