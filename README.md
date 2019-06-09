@@ -1,7 +1,5 @@
 # DATABASE PASSWORD MANAGER
 
----
-
 ## Problem Statement :
 Whenever there are CRUD operations to be done by a web server, the password to the database is needed to log on to it.
 This DB password must not be compromised as it can have vital data. So, obtaining passwords for the DB by the web server seems to be a pretty
