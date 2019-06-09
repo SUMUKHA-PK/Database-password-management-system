@@ -12,5 +12,9 @@ A secure server,in the local network of the other production servers, that enabl
 
 
 ## Implementation details : 
-* new
-* noew
+* API :
+        * "/storePassword" 
+        * "/getPassword"
+* No need of config files. 
+* No plaintext storage of passwords anywhere.
+* Only the server who stored the password can access its own passwords.
