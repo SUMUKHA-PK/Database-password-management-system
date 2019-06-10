@@ -15,10 +15,11 @@ const charset = "abcdefghijklmnopqrstuvwxyz" +
 	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 // RegisterUser implements /registerUser end point
+// this adds the user to the userData map.
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "No input found!", http.StatusBadRequest)
 		return
 	}
 	var newReq User
@@ -27,12 +28,18 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	var username = newReq.UserID
+	if _, ok := userData[username]; ok {
+		http.Error(w, "User already exists!", http.StatusBadRequest)
+		return
+	}
 
 	// log.Println(util.StringWithCharset(random.Intn(20)+10, charset))
 	preHashString := newReq.UserID + util.StringWithCharset(random.Intn(20)+10, charset)
 	hashedString := crypto.CreateSHA256Hash(preHashString)
+	userData[username] = hashedString
 	hashOutput := UserHash{hashedString}
-	log.Println(hashedString)
+	log.Println(userData)
 	outJSON, err := json.Marshal(hashOutput)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
