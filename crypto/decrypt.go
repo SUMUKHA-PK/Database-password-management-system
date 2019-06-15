@@ -7,7 +7,7 @@ import (
 
 // Decrypt decrypts
 func Decrypt(data []byte, passphrase string) ([]byte, error) {
-	key := []byte(createMD5Hash(passphrase))
+	key := []byte(CreateMD5Hash(passphrase))
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return []byte{}, err
