@@ -11,9 +11,6 @@ import (
 	"github.com/SUMUKHA-PK/Database-password-management-system/util"
 )
 
-const charset = "abcdefghijklmnopqrstuvwxyz" +
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
 // RegisterUser implements /registerUser end point
 // this adds the user to the userData map.
 func RegisterUser(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +32,7 @@ func RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// log.Println(util.StringWithCharset(random.Intn(20)+10, charset))
-	preHashString := newReq.UserID + util.StringWithCharset(random.Intn(20)+10, charset)
+	preHashString := newReq.UserID + util.StringWithCharset(random.Intn(20)+10, util.Charset)
 	hashedString := crypto.CreateSHA256Hash(preHashString)
 	userData[username] = hashedString
 	hashOutput := UserHash{hashedString}
