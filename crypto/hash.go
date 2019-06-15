@@ -6,12 +6,14 @@ import (
 	"encoding/hex"
 )
 
-func createMD5Hash(key string) string {
+// CreateMD5Hash returns an MD5 hashed string
+func CreateMD5Hash(key string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(key))
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
+// CreateSHA256Hash returns a SHA256 hash
 func CreateSHA256Hash(key string) string {
 	hashedData := sha256.New()
 	//hash the data
